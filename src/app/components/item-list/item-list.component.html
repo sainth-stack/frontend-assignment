@@ -1,0 +1,66 @@
+<div class="item-list">
+    <h1>User Management</h1>
+  
+    <div *ngIf="isLoading" class="loader">Loading...</div>
+  
+    <div *ngIf="!isLoading">
+      <div class="form-group" *ngIf="isCreating || editItem; else showCreateButton">
+        <input
+          type="text"
+          [(ngModel)]="currentItem.name"
+          placeholder="Enter name"
+        />
+        <input
+          type="email"
+          [(ngModel)]="currentItem.email"
+          placeholder="Enter email"
+        />
+        <button
+          *ngIf="isCreating"
+          (click)="addItem()"
+          [disabled]="!currentItem.name || !currentItem.email"
+        >
+          Submit
+        </button>
+        <button
+          *ngIf="editItem"
+          (click)="updateItem()"
+          [disabled]="!currentItem.name || !currentItem.email"
+        >
+          Update
+        </button>
+        <button (click)="cancelAction()">Cancel</button>
+      </div>
+  
+      <ng-template #showCreateButton>
+        <button class="create-button" (click)="startCreate()">Create New User</button>
+      </ng-template>
+  
+      <div *ngIf="items.length > 0; else noItems">
+        <table class="styled-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of items">
+              <td>{{ item.name }}</td>
+              <td>{{ item.email }}</td>
+              <td>
+                <button (click)="startEdit(item)" class="edit-button">Edit</button>
+                <button (click)="deleteItem(item.id)" class="delete-button">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  
+      <ng-template #noItems>
+        <p>No items found.</p>
+      </ng-template>
+    </div>
+  </div>
+  
